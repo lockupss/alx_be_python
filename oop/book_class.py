@@ -8,6 +8,9 @@ string representation.
 from __future__ import annotations
 
 
+from typing import Optional
+
+
 class Book:
     """A simple representation of a book.
 
@@ -18,15 +21,18 @@ class Book:
         current_page (int): Current page (0 means not started).
     """
 
-    def __init__(self, title: str, author: str, pages: int):
+    def __init__(self, title: str, author: str, pages: int, year: Optional[int] = None):
         if not isinstance(title, str) or not isinstance(author, str):
             raise TypeError("title and author must be strings")
         if not isinstance(pages, int) or pages <= 0:
             raise ValueError("pages must be a positive integer")
+        if year is not None and (not isinstance(year, int) or year <= 0):
+            raise ValueError("year must be a positive integer when provided")
 
         self.title = title
         self.author = author
         self.pages = pages
+        self.year = year
         self.current_page = 0
 
     def read(self, page: int) -> None:
@@ -56,3 +62,22 @@ class Book:
 
     def __str__(self) -> str:
         return f"{self.title} by {self.author}"
+
+    def __repr__(self) -> str:  # readable representation for debugging
+        return (
+            f"Book(title={self.title!r}, author={self.author!r}, "
+            f"pages={self.pages!r}, year={self.year!r})"
+        )
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Book):
+            return NotImplemented
+        return (
+            self.title == other.title
+            and self.author == other.author
+            and self.pages == other.pages
+            and self.year == other.year
+        )
+
+    def __hash__(self) -> int:
+        return hash((self.title, self.author, self.pages, self.year))
