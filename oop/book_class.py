@@ -69,6 +69,23 @@ class Book:
             f"pages={self.pages!r}, year={self.year!r})"
         )
 
+    def __del__(self) -> None:
+        """Destructor: clear references to help with deterministic cleanup.
+
+        Note: __del__ is not guaranteed to be called at interpreter shutdown
+        or if there are reference cycles. We keep it simple and safe.
+        """
+        try:
+            # clear attributes to break potential reference cycles
+            self.title = None  # type: ignore
+            self.author = None  # type: ignore
+            self.pages = None  # type: ignore
+            self.year = None  # type: ignore
+            self.current_page = None  # type: ignore
+        except Exception:
+            # avoid raising in destructor
+            pass
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Book):
             return NotImplemented
