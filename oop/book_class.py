@@ -60,16 +60,16 @@ class Book:
         """Return the current page (simple bookmark)."""
         return self.current_page
 
-    def __str__(self) -> str:
+    def __str__(self):
         return f"{self.title} by {self.author}"
 
-    def __repr__(self) -> str:  # readable representation for debugging
+    def __repr__(self):  # readable representation for debugging
         return (
             f"Book(title={self.title!r}, author={self.author!r}, "
             f"pages={self.pages!r}, year={self.year!r})"
         )
 
-    def __del__(self) -> None:
+    def __del__(self):
         """Destructor: clear references to help with deterministic cleanup.
 
         Note: __del__ is not guaranteed to be called at interpreter shutdown
