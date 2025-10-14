@@ -61,9 +61,15 @@ class Book:
         return self.current_page
 
     def __str__(self):
+        if self.year is not None:
+            return f"{self.title} by {self.author}, published in {self.year}"
         return f"{self.title} by {self.author}"
 
     def __repr__(self):  # readable representation for debugging
+        # If year is provided, show compact representation Book('title', 'author', year)
+        if self.year is not None:
+            return f"Book({self.title!r}, {self.author!r}, {self.year!r})"
+        # Fallback to detailed form (keeps backwards compatibility)
         return (
             f"Book(title={self.title!r}, author={self.author!r}, "
             f"pages={self.pages!r}, year={self.year!r})"
@@ -76,6 +82,11 @@ class Book:
         or if there are reference cycles. We keep it simple and safe.
         """
         try:
+            # Print a deletion message for visibility (tests expect this)
+            try:
+                print(f"Deleting {self.title}")
+            except Exception:
+                pass
             # clear attributes to break potential reference cycles
             self.title = None  # type: ignore
             self.author = None  # type: ignore
