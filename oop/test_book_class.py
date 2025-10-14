@@ -39,8 +39,10 @@ def test_magic_methods_and_equality():
     b2 = Book("Dune", "Herbert", 412, year=1965)
     b3 = Book("Dune", "Herbert", 412, year=1966)
 
-    assert str(b1) == "Dune by Herbert"
-    assert repr(b1).startswith("Book(title='Dune'") or repr(b1).startswith('Book(title="Dune"')
+    # When year is provided, string should include the publication year
+    assert str(b1) == "Dune by Herbert, published in 1965"
+    # repr should be compact when year is present
+    assert repr(b1) == "Book('Dune', 'Herbert', 1965)"
     assert b1 == b2
     assert not (b1 == b3)
     s = {b1, b2}
